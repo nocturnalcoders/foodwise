@@ -50,6 +50,7 @@ export default function Recipes() {
             <span className="muted small">AI suggests a dish that uses your soon-to-expire food</span></span>
         </button>
         {!list.length && <Empty icon="🍳">Add a few items to your inventory to get matching recipes.</Empty>}
+        <div className="list">
         {list.map(({ r, h, e }) => (
           <div className="card rcard" key={r.id}>
             <button className="pic" onClick={() => openSheet(<RecipeSheet recipe={r} />)} aria-label={`Open ${r.name}`}><Thumb className="pic-in" src={recipePhoto(r)} em={r.em} /></button>
@@ -64,6 +65,7 @@ export default function Recipes() {
             <button className="heart" onClick={() => toggleFav(r.id)} aria-label="Save recipe">{prefs.fav.includes(r.id) ? '💚' : '🤍'}</button>
           </div>
         ))}
+        </div>
       </div>
     </>
   )

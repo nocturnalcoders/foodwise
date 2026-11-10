@@ -47,7 +47,7 @@ export default function Home() {
       </div>
 
       <h2 className="sec">Use these first ({expiring.length})</h2>
-      {expiring.length ? expiring.slice(0, 3).map((i) => <ItemRow key={i.id} item={i} />) : <p className="muted small">Nothing is close to expiry. Nice work.</p>}
+      {expiring.length ? <div className="list">{expiring.slice(0, 4).map((i) => <ItemRow key={i.id} item={i} />)}</div> : <p className="muted small">Nothing is close to expiry. Nice work.</p>}
 
       {best && (
         <button className="tip" style={{ width: '100%', textAlign: 'left' }} onClick={() => openSheet(<RecipeSheet recipe={best.r} />)}>

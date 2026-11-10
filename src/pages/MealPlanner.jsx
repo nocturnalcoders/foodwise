@@ -30,6 +30,7 @@ export default function MealPlanner() {
         </div>
         <button className="btn ghost sm" style={{ width: '100%', marginBottom: 4 }} onClick={() => go('recipes')}>Browse recipe suggestions</button>
 
+        <div className="list days">
         {days.map((d) => {
           const meals = data.meals.filter((m) => m.date === iso(d))
           return (
@@ -51,6 +52,7 @@ export default function MealPlanner() {
             </div>
           )
         })}
+        </div>
         <button className="btn" style={{ marginTop: 18 }} onClick={() => openSheet(<PlanSheet />)}><Icon name="plus" /> Plan new meal</button>
       </div>
     </>

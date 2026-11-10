@@ -30,8 +30,8 @@ export default function Inventory() {
         </div>
         <div className="search"><Icon name="search" /><input placeholder="Search food items" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search food items" /></div>
         {!list.length && <Empty icon="🧺">No items here yet. Tap + to add your first one.</Empty>}
-        {soon.length > 0 && <><h2 className="sec">Expiring soon</h2>{soon.map((i) => <ItemRow key={i.id} item={i} />)}</>}
-        {other.length > 0 && <><h2 className="sec">Other items</h2>{other.map((i) => <ItemRow key={i.id} item={i} />)}</>}
+        {soon.length > 0 && <><h2 className="sec">Expiring soon</h2><div className="list">{soon.map((i) => <ItemRow key={i.id} item={i} />)}</div></>}
+        {other.length > 0 && <><h2 className="sec">Other items</h2><div className="list">{other.map((i) => <ItemRow key={i.id} item={i} />)}</div></>}
         <div style={{ height: 60 }} />
       </div>
       <button className="fab" onClick={() => go('add')} aria-label="Add food item"><Icon name="plus" /></button>

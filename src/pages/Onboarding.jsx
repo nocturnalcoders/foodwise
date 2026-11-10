@@ -30,8 +30,7 @@ export default function Onboarding() {
         {SLIDES.map((s, n) => (
           <div className="slide" key={n} aria-hidden={n !== i}>
             <div className="pic" style={{ backgroundImage: `url(${s.img})` }}><span>{s.em}</span></div>
-            <h1>{s.title}</h1>
-            <p>{s.text}</p>
+            <div className="txt"><h1>{s.title}</h1><p>{s.text}</p></div>
           </div>
         ))}
       </div>

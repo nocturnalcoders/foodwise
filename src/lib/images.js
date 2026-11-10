@@ -1,10 +1,11 @@
 import { EMOJI } from './food.js'
 
-/** Built-in photos live in public/img. A missing file falls back to the emoji (see Thumb). */
+/** Built-in photos live in public/img (sources in public/img/CREDITS.md). A missing file falls back to the emoji (see Thumb). */
+const JPG_FOODS = ['corn', 'flour', 'grape', 'juice', 'noodle', 'rice', 'tofu', 'yogurt'] // the rest are PNG cut-outs
 export const foodPhoto = (name) => {
   const n = (name || '').toLowerCase()
   const f = EMOJI.find(([k]) => n.includes(k))
-  return f ? `/img/food/${f[0]}.png` : null
+  return f ? `/img/food/${f[0]}.${JPG_FOODS.includes(f[0]) ? 'jpg' : 'png'}` : null
 }
 export const recipePhoto = (r) => r.photo || (r.ai ? null : `/img/recipes/${r.id}.jpg`)
 export const itemPhoto = (item) => item.photo || foodPhoto(item.name)
