@@ -5,6 +5,8 @@ import PlanSheet from '../sheets/PlanSheet.jsx'
 import RecipeSheet from '../sheets/RecipeSheet.jsx'
 import { useStore } from '../lib/store.jsx'
 import { useUI } from '../lib/ui.jsx'
+import Thumb from '../components/Thumb.jsx'
+import { recipePhoto } from '../lib/images.js'
 import { findHave, getRecipe } from '../lib/food.js'
 import { MON, addDays, fmtDay, iso, today } from '../lib/dates.js'
 
@@ -38,7 +40,7 @@ export default function MealPlanner() {
                 const uses = r.ing.filter((k) => findHave(data.items, k)).join(', ')
                 return (
                   <div className="row" key={m.id}>
-                    <div className="em">{r.em}</div>
+                    <Thumb src={recipePhoto(r)} em={r.em} />
                     <button className="t" style={{ textAlign: 'left' }} onClick={() => openSheet(<RecipeSheet recipe={r} />)}>
                       <b>{r.name}</b><span className="muted small">Uses: {uses || 'shopping needed'}</span>
                     </button>

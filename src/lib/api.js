@@ -46,7 +46,12 @@ const write = () => { try { localStorage.setItem(KEY, JSON.stringify(cache)) } c
 const copy = (o) => JSON.parse(JSON.stringify(o))
 
 const local = {
-  async login({ name, email }) { return { user: { id: 'local', name, email }, token: null } },
+  async authConfig() { return { google_client_id: null, apple_client_id: null } },
+  async register({ name, email }) { return { user: { id: 'local', name: name || email.split('@')[0], email, has_password: true }, token: null } },
+  async login({ email }) { return { user: { id: 'local', name: email.split('@')[0], email, has_password: true }, token: null } },
+  async google() { throw new NeedsBackend('Google sign-in') },
+  async apple() { throw new NeedsBackend('Apple sign-in') },
+  async updateMe(patch) { return patch },
   async loadAll() {
     if (!cache) { cache = read() || seed(); COLLECTIONS.forEach((c) => { cache[c] ||= [] }); write() }
     return copy(cache)
@@ -68,7 +73,12 @@ const local = {
 
 /* ---------- remote adapter (REST backend) ---------- */
 const remote = {
+  authConfig: () => request('GET', '/api/auth/config'),
+  register: (body) => request('POST', '/api/auth/register', body),
   login: (body) => request('POST', '/api/auth/login', body),
+  google: (body) => request('POST', '/api/auth/google', body),
+  apple: (body) => request('POST', '/api/auth/apple', body),
+  updateMe: (patch) => request('PATCH', '/api/auth/me', patch),
   async loadAll() {
     const out = {}
     await Promise.all(COLLECTIONS.map(async (c) => { out[c] = await request('GET', `/api/${c}`) }))

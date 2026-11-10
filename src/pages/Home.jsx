@@ -1,8 +1,11 @@
+import Avatar from '../components/Avatar.jsx'
 import Icon from '../components/Icon.jsx'
 import ItemRow from '../components/ItemRow.jsx'
 import RecipeSheet from '../sheets/RecipeSheet.jsx'
 import { useStore } from '../lib/store.jsx'
 import { useUI } from '../lib/ui.jsx'
+import Thumb from '../components/Thumb.jsx'
+import { recipePhoto } from '../lib/images.js'
 import { allRecipes, recipeScore } from '../lib/food.js'
 import { addDays, daysLeft, kg, monthStart, sumKg } from '../lib/dates.js'
 
@@ -21,7 +24,10 @@ export default function Home() {
     <div className="screen">
       <div className="greet">
         <h1>{greeting},<br />{user?.name || 'there'} 👋</h1>
-        <button className="iconbtn" onClick={() => go('inventory')} aria-label="Expiry alerts"><Icon name="bell" /></button>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <button className="iconbtn" onClick={() => go('inventory')} aria-label="Expiry alerts"><Icon name="bell" /></button>
+          <button onClick={() => go('profile', { reset: true })} aria-label="Profile"><Avatar user={user} size={38} /></button>
+        </div>
       </div>
 
       <button className="stat" style={{ width: '100%', textAlign: 'left' }} onClick={() => go('waste')}>
@@ -49,7 +55,7 @@ export default function Home() {
             <b>Tip of the day</b>
             <span className="small">Cook {best.r.name} tonight to use {best.e} item{best.e > 1 ? 's' : ''} that expire soon.</span>
           </div>
-          <div className="big">{best.r.em}</div>
+          <Thumb className="tip-pic" src={recipePhoto(best.r)} em={best.r.em} />
         </button>
       )}
     </div>

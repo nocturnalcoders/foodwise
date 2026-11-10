@@ -6,6 +6,8 @@ import RecipeSheet from '../sheets/RecipeSheet.jsx'
 import { api, usingBackend } from '../lib/api.js'
 import { useStore } from '../lib/store.jsx'
 import { useUI } from '../lib/ui.jsx'
+import Thumb from '../components/Thumb.jsx'
+import { recipePhoto } from '../lib/images.js'
 import { allRecipes, recipeScore } from '../lib/food.js'
 import { daysLeft, uid } from '../lib/dates.js'
 
@@ -50,7 +52,7 @@ export default function Recipes() {
         {!list.length && <Empty icon="🍳">Add a few items to your inventory to get matching recipes.</Empty>}
         {list.map(({ r, h, e }) => (
           <div className="card rcard" key={r.id}>
-            <button className="pic" onClick={() => openSheet(<RecipeSheet recipe={r} />)} aria-label={`Open ${r.name}`}>{r.em}</button>
+            <button className="pic" onClick={() => openSheet(<RecipeSheet recipe={r} />)} aria-label={`Open ${r.name}`}><Thumb className="pic-in" src={recipePhoto(r)} em={r.em} /></button>
             <button className="t" style={{ textAlign: 'left' }} onClick={() => openSheet(<RecipeSheet recipe={r} />)}>
               <b>{r.name}</b>
               <div className="meta">

@@ -3,6 +3,7 @@ import { StoreProvider, useStore } from './lib/store.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import Splash from './pages/Splash.jsx'
 import Login from './pages/Login.jsx'
+import Onboarding from './pages/Onboarding.jsx'
 import Home from './pages/Home.jsx'
 import Inventory from './pages/Inventory.jsx'
 import AddItem from './pages/AddItem.jsx'
@@ -14,10 +15,10 @@ import Insights from './pages/Insights.jsx'
 import Profile from './pages/Profile.jsx'
 
 const PAGES = {
-  splash: Splash, login: Login, home: Home, inventory: Inventory, add: AddItem, plan: MealPlanner,
+  splash: Splash, onboard: Onboarding, login: Login, home: Home, inventory: Inventory, add: AddItem, plan: MealPlanner,
   recipes: Recipes, shop: ShoppingList, waste: WasteTracker, insights: Insights, profile: Profile,
 }
-const NO_NAV = ['splash', 'login']
+const NO_NAV = ['splash', 'onboard', 'login']
 
 function Shell() {
   const { screen, sheet, closeSheet, toastMsg } = useUI()

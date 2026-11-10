@@ -6,7 +6,7 @@ export const PRICE_PER_KG = 6.5 // average S$ per kg of household food
 export const CO2_PER_KG = 2.5 // kg CO2e avoided per kg of food not wasted
 export const SAVED_KG_PER_ITEM = 0.3 // rough weight credited when an item is used up
 
-const EMOJI = [['milk','🥛'],['egg','🥚'],['lettuce','🥬'],['cabbage','🥬'],['spinach','🥬'],['chicken','🍗'],['beef','🥩'],['pork','🥩'],['fish','🐟'],['salmon','🐟'],['prawn','🦐'],['apple','🍎'],['banana','🍌'],['orange','🍊'],['grape','🍇'],['tomato','🍅'],['carrot','🥕'],['onion','🧅'],['garlic','🧄'],['potato','🥔'],['rice','🍚'],['pasta','🍝'],['noodle','🍜'],['bread','🍞'],['cheese','🧀'],['butter','🧈'],['yogurt','🥣'],['pea','🫛'],['corn','🌽'],['broccoli','🥦'],['cucumber','🥒'],['pepper','🫑'],['mushroom','🍄'],['tofu','🧊'],['strawberr','🍓'],['juice','🧃'],['flour','🌾']]
+export const EMOJI = [['milk','🥛'],['egg','🥚'],['lettuce','🥬'],['cabbage','🥬'],['spinach','🥬'],['chicken','🍗'],['beef','🥩'],['pork','🥩'],['fish','🐟'],['salmon','🐟'],['prawn','🦐'],['apple','🍎'],['banana','🍌'],['orange','🍊'],['grape','🍇'],['tomato','🍅'],['carrot','🥕'],['onion','🧅'],['garlic','🧄'],['potato','🥔'],['rice','🍚'],['pasta','🍝'],['noodle','🍜'],['bread','🍞'],['cheese','🧀'],['butter','🧈'],['yogurt','🥣'],['pea','🫛'],['corn','🌽'],['broccoli','🥦'],['cucumber','🥒'],['pepper','🫑'],['mushroom','🍄'],['tofu','🧊'],['strawberr','🍓'],['juice','🧃'],['flour','🌾']]
 export const emojiFor = (name) => {
   const n = name.toLowerCase()
   const f = EMOJI.find(([k]) => n.includes(k))

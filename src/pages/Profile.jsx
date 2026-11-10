@@ -1,6 +1,8 @@
 import Icon from '../components/Icon.jsx'
 import TopBar from '../components/TopBar.jsx'
+import Avatar from '../components/Avatar.jsx'
 import HouseholdSheet from '../sheets/HouseholdSheet.jsx'
+import ProfileSheet from '../sheets/ProfileSheet.jsx'
 import { usingBackend } from '../lib/api.js'
 import { useStore } from '../lib/store.jsx'
 import { useUI } from '../lib/ui.jsx'
@@ -22,10 +24,11 @@ export default function Profile() {
     <>
       <TopBar title="Profile" />
       <div className="screen">
-        <div className="prof">
-          <div className="avatar">{(user?.name || '?')[0].toUpperCase()}</div>
-          <div><b style={{ fontSize: 18 }}>{user?.name || 'Guest'}</b><div className="muted small">{user?.email}</div></div>
-        </div>
+        <button className="prof" onClick={() => openSheet(<ProfileSheet />)}>
+          <Avatar user={user} />
+          <div className="t"><b style={{ fontSize: 18 }}>{user?.name || 'Guest'}</b><div className="muted small">{user?.email}</div></div>
+          <span className="edit-pill"><Icon name="edit" />Edit</span>
+        </button>
         <div className="menu">
           <button onClick={() => openSheet(<HouseholdSheet />)}><Icon name="users" /><span>My household<br /><span className="muted small">Share food with the people you live with</span></span><Icon name="chev" /></button>
           <div className="mi">

@@ -46,12 +46,22 @@ export function StoreProvider({ children }) {
     api.remove(col, id).catch(fail)
   }, [fail])
 
-  const login = useCallback(async (name, email, password) => {
-    const r = await api.login({ name, email, password })
+  /** method: 'login' | 'register' | 'google' | 'apple'; body is what that endpoint expects. */
+  const signIn = useCallback(async (method, body) => {
+    const r = await api[method](body)
     const u = { ...r.user, token: r.token }
     setToken(r.token); writeJSON(USER_KEY, u); setUser(u)
     await load()
   }, [load])
+
+  const updateProfile = useCallback(async (patch) => {
+    const saved = await api.updateMe(patch)
+    setUser((u) => {
+      const n = { ...u, ...saved, token: u.token }
+      if ('avatar' in saved) n.avatar = saved.avatar || null
+      writeJSON(USER_KEY, n); return n
+    })
+  }, [])
 
   const logout = useCallback(() => {
     setToken(null); localStorage.removeItem(USER_KEY); setUser(null)
@@ -66,7 +76,7 @@ export function StoreProvider({ children }) {
   }, [fail])
 
   return (
-    <StoreCtx.Provider value={{ data, user, prefs, upsert, remove, login, logout, setPrefs, reset, reload: load }}>
+    <StoreCtx.Provider value={{ data, user, prefs, upsert, remove, signIn, updateProfile, logout, setPrefs, reset, reload: load }}>
       {children}
     </StoreCtx.Provider>
   )

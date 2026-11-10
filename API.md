@@ -15,10 +15,24 @@ The adapter is in `src/lib/api.js`. Build the backend to match this file.
 
 ## Auth
 
-### `POST /api/auth/login`
-Body: `{ "name": "Loki", "email": "loki@example.com", "password": "..." }`
-Returns: `{ "user": { "id": "u1", "name": "Loki", "email": "loki@example.com" }, "token": "..." }`
-Create the account on first login (sign-up) or check the password.
+The user object returned everywhere:
+`{ "id": "u1", "name": "Loki", "email": "loki@example.com", "avatar": "data:image/jpeg;base64,..." | null,
+   "has_password": true, "google": false, "apple": false }`
+
+| Method | Path | Body | Notes |
+|--------|------|------|-------|
+| GET | `/api/auth/config` | none | `{ "google_client_id": "...", "apple_client_id": null }`: which social buttons work |
+| POST | `/api/auth/register` | `{ name, email, password }` | Password 6+ characters. 409 if the email exists |
+| POST | `/api/auth/login` | `{ email, password }` | 404 if no account (the app switches to Sign up), 401 wrong password |
+| POST | `/api/auth/google` | `{ access_token }` | Token from Google's popup. Creates the account or links it by email |
+| POST | `/api/auth/apple` | `{ id_token, name }` | Token from Apple's popup. Apple sends the name only the first time |
+| GET | `/api/auth/me` | none | The user object |
+| PATCH | `/api/auth/me` | `{ name?, avatar? }` | `avatar: ""` removes the photo |
+
+Register, login, google and apple all return `{ "user": {...}, "token": "..." }`.
+
+Photos (`avatar`, item `photo`) are JPEG data URLs the app shrinks before sending
+(256 px for avatars, 360 px for items). The API rejects anything over about 300 KB.
 
 ## Data collections
 
@@ -36,7 +50,8 @@ Six collections share the same three endpoints:
 ```jsonc
 // items: food at home
 { "id": "a1", "name": "Milk", "cat": "fridge|freezer|pantry", "exp": "2026-11-12",
-  "qty": "1 L", "pct": 60, "em": "🥛", "added": "2026-11-06" }
+  "qty": "1 L", "pct": 60, "em": "🥛", "added": "2026-11-06",
+  "photo": "data:image/jpeg;base64,..." }   // optional; null shows the built-in photo or emoji
 
 // shop: shopping list
 { "id": "s1", "name": "Tofu", "done": false }

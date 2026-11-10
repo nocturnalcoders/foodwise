@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Icon from '../components/Icon.jsx'
 import ExpiryText from '../components/ExpiryText.jsx'
 import RecipeSheet from './RecipeSheet.jsx'
 import WasteSheet from './WasteSheet.jsx'
 import { useStore } from '../lib/store.jsx'
 import { useUI } from '../lib/ui.jsx'
+import Thumb from '../components/Thumb.jsx'
+import { itemPhoto, recipePhoto, shrinkImage } from '../lib/images.js'
 import { useAddToShop } from '../lib/useShopping.jsx'
 import { allRecipes, SAVED_KG_PER_ITEM } from '../lib/food.js'
 import { daysLeft, iso, today, uid } from '../lib/dates.js'
@@ -15,7 +17,15 @@ export default function ItemSheet({ id }) {
   const addToShop = useAddToShop()
   const item = data.items.find((x) => x.id === id)
   const [pct, setPct] = useState(item?.pct ?? 0)
+  const photoRef = useRef(null)
   if (!item) return <p className="muted">This item was removed.</p>
+
+  const onPhoto = async (e) => {
+    const f = e.target.files[0]; e.target.value = ''
+    if (!f) return
+    try { upsert('items', { ...item, pct, photo: await shrinkImage(f, 360) }); toast('Photo updated') }
+    catch (err) { toast(err.message) }
+  }
 
   const commit = () => { if (pct !== item.pct) upsert('items', { ...item, pct }) }
   const recipes = allRecipes(data).filter((r) => r.ing.some((k) => item.name.toLowerCase().includes(k))).slice(0, 3)
@@ -29,7 +39,11 @@ export default function ItemSheet({ id }) {
   return (
     <>
       <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 12 }}>
-        <div style={{ fontSize: 40 }}>{item.em}</div>
+        <button className="photo-btn" onClick={() => photoRef.current.click()} aria-label="Change photo">
+          <Thumb className="em big" src={itemPhoto(item)} em={item.em} alt={item.name} />
+          <span className="cam-badge"><Icon name="cam" /></span>
+        </button>
+        <input ref={photoRef} type="file" accept="image/*" hidden onChange={onPhoto} />
         <div><h2>{item.name}</h2><ExpiryText exp={item.exp} /> <span className="muted small">· {item.qty}</span></div>
       </div>
       <label className="small" style={{ fontWeight: 600 }} htmlFor="pct">How much is left? <b>{pct}%</b></label>
@@ -39,7 +53,7 @@ export default function ItemSheet({ id }) {
         <h2 className="sec">Cook it with</h2>
         {recipes.map((r) => (
           <button key={r.id} className="row" onClick={() => openSheet(<RecipeSheet recipe={r} />)}>
-            <div className="em">{r.em}</div>
+            <Thumb src={recipePhoto(r)} em={r.em} />
             <div className="t"><b>{r.name}</b><span className="muted small">{r.min} mins</span></div>
             <Icon name="chev" />
           </button>

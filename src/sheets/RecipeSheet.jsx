@@ -1,6 +1,8 @@
 import PlanSheet from './PlanSheet.jsx'
 import { useStore } from '../lib/store.jsx'
 import { useUI } from '../lib/ui.jsx'
+import Thumb from '../components/Thumb.jsx'
+import { recipePhoto } from '../lib/images.js'
 import { findHave } from '../lib/food.js'
 import { daysLeft, uid } from '../lib/dates.js'
 
@@ -25,7 +27,7 @@ export default function RecipeSheet({ recipe: r }) {
 
   return (
     <>
-      <div style={{ fontSize: 46 }}>{r.em}</div>
+      <Thumb className="sheet-hero" src={recipePhoto(r)} em={r.em} alt={r.name} />
       <h2>{r.name}</h2>
       <p className="muted small">⏱ {r.min} mins</p>
       <h2 className="sec">Ingredients</h2>
